@@ -58,6 +58,8 @@ public class MainActivity extends AppCompatActivity implements MovieRecyclerView
         btn_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                movies.clear();
+                
                 String query = et_searchQuery.getText().toString();
                 getMovies = GlobalApplication.networkService.getMovies(query);
                 getMovies.clone().enqueue(new Callback<JsonObject>() {
