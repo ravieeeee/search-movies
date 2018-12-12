@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -19,7 +20,6 @@ import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
 
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -27,10 +27,12 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity implements MovieRecyclerViewAdapter.ItemClickListener {
     private final String TAG = MainActivity.class.getName();
     private Call<JsonObject> getMovies;
+    private ArrayList<Movie> movies;
+
     private EditText et_searchQuery;
     private Button btn_search;
+
     private RecyclerView rv_movies;
-    private ArrayList<Movie> movies;
     private MovieRecyclerViewAdapter movieRecyclerViewAdapter;
 
     @Override
@@ -40,9 +42,13 @@ public class MainActivity extends AppCompatActivity implements MovieRecyclerView
 
         movies = new ArrayList<>();
 
-        rv_movies = findViewById(R.id.rv_movies);
-        rv_movies.setLayoutManager(new GridLayoutManager(this, 1));
 
+        rv_movies = findViewById(R.id.rv_movies);
+        GridLayoutManager layoutManager = new GridLayoutManager(this, 1);
+        rv_movies.setLayoutManager(layoutManager);
+        DividerItemDecoration dividerItemDecoration =
+                new DividerItemDecoration(rv_movies.getContext(), layoutManager.getOrientation());
+        rv_movies.addItemDecoration(dividerItemDecoration);
         movieRecyclerViewAdapter = new MovieRecyclerViewAdapter(this, movies);
         movieRecyclerViewAdapter.setClickListener(this);
         rv_movies.setAdapter(movieRecyclerViewAdapter);
